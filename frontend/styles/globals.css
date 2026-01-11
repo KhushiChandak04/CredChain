@@ -1,9 +1,186 @@
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Inter', Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background: #f7f7f7;
+  background: linear-gradient(120deg, #f7f7f7 0%, #e3e9f7 100%);
+  min-height: 100vh;
+  color: #222;
 }
-h1, h2 {
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(44,62,80,0.06);
+}
+.logo {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #3b82f6;
+  letter-spacing: 1px;
+}
+.header nav a {
+  margin-left: 2rem;
+  text-decoration: none;
   color: #2c3e50;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.header nav a:hover {
+  color: #3b82f6;
+}
+
+.main-landing {
+  max-width: 900px;
+  margin: 3rem auto 0 auto;
+  padding: 0 1rem;
+}
+.hero {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+.hero h1 {
+  font-size: 2.8rem;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+.hero p {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 2rem;
+}
+.cta-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+}
+.cta {
+  display: inline-block;
+  padding: 0.8rem 2rem;
+  background: #3b82f6;
+  color: #fff;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(59,130,246,0.08);
+  transition: background 0.2s, color 0.2s;
+}
+.cta.secondary {
+  background: #fff;
+  color: #3b82f6;
+  border: 1.5px solid #3b82f6;
+}
+.cta:hover {
+  background: #2563eb;
+  color: #fff;
+}
+.cta.secondary:hover {
+  background: #3b82f6;
+  color: #fff;
+}
+
+.features {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.feature-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(44,62,80,0.07);
+  padding: 2rem 1.5rem;
+  flex: 1 1 220px;
+  min-width: 220px;
+  max-width: 280px;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+.feature-card h3 {
+  color: #3b82f6;
+  margin-bottom: 0.7rem;
+}
+.feature-card p {
+  color: #444;
+  font-size: 1rem;
+}
+
+.footer {
+.footer {
+  text-align: center;
+  padding: 2rem 0 1rem 0;
+  color: #888;
+  font-size: 1rem;
+  margin-top: 3rem;
+}
+
+/* Dashboard styles */
+.dashboard-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 70vh;
+  background: none;
+}
+.dashboard-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 16px rgba(44,62,80,0.09);
+  padding: 2.5rem 2rem 2rem 2rem;
+  margin-top: 3rem;
+  min-width: 340px;
+  max-width: 420px;
+  width: 100%;
+}
+.dashboard-card h2 {
+  margin-top: 0;
+  color: #3b82f6;
+  font-size: 2rem;
+}
+.dashboard-desc {
+.dashboard-desc {
+  color: #555;
+  margin-bottom: 2rem;
+  font-size: 1.08rem;
+}
+
+/* Credential Form Styles */
+.cred-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+.cred-label {
+  font-weight: 500;
+  color: #2c3e50;
+}
+.cred-input[type="file"] {
+  padding: 0.5rem 0;
+  font-size: 1rem;
+}
+.cred-btn {
+  background: #3b82f6;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.7rem 1.5rem;
+  font-size: 1.08rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 0.5rem;
+}
+.cred-btn:hover {
+  background: #2563eb;
+}
+.cred-status {
+  min-height: 1.2em;
+  color: #3b82f6;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+}
+}
 }

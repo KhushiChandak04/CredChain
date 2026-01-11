@@ -17,10 +17,11 @@ export default function VerifyCredentialForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input type="file" onChange={handleFileChange} />
-      <button type="submit">Verify Credential</button>
-      <div>{result}</div>
+    <form className="cred-form" onSubmit={handleSubmit}>
+      <label className="cred-label">Select credential file</label>
+      <input className="cred-input" type="file" onChange={handleFileChange} />
+      <button className="cred-btn" type="submit">Verify Credential</button>
+      <div className="cred-status">{result}</div>
     </form>
   );
 }

@@ -22,10 +22,11 @@ export default function IssueCredentialForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input type="file" onChange={handleFileChange} />
-      <button type="submit">Issue Credential</button>
-      <div>{status}</div>
+    <form className="cred-form" onSubmit={handleSubmit}>
+      <label className="cred-label">Select credential file</label>
+      <input className="cred-input" type="file" onChange={handleFileChange} />
+      <button className="cred-btn" type="submit">Issue Credential</button>
+      <div className="cred-status">{status}</div>
     </form>
   );
 }
