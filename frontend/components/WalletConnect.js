@@ -1,7 +1,9 @@
 import { useState } from 'react';
 
+
 export default function WalletConnect() {
   const [address, setAddress] = useState('');
+  const [network, setNetwork] = useState('');
   const [connecting, setConnecting] = useState(false);
 
   const handleConnect = async () => {
@@ -10,8 +12,15 @@ export default function WalletConnect() {
       try {
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
         setAddress(accounts[0]);
+        const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+        if (chainId === '0xaa36a7') {
+          setNetwork('Sepolia');
+        } else {
+          setNetwork('Unknown');
+        }
       } catch (err) {
         setAddress('');
+        setNetwork('');
       }
     }
     setConnecting(false);
@@ -52,8 +61,22 @@ export default function WalletConnect() {
           borderRadius:8,
           padding:'6px 16px',
           boxShadow:'0 1px 4px #e0e7ff',
+          marginBottom:'0.3rem',
         }}>
-          {address.slice(0,6)}...{address.slice(-4)}
+          Connected: {address.slice(0,6)}...{address.slice(-4)}
+        </div>
+      )}
+      {network && address && (
+        <div style={{
+          color: network === 'Sepolia' ? '#009688' : '#ff9800',
+          fontWeight:'bold',
+          fontSize:'1rem',
+          background:'#f8fafc',
+          borderRadius:8,
+          padding:'4px 14px',
+          boxShadow:'0 1px 4px #e0e7ff',
+        }}>
+          Network: {network}
         </div>
       )}
     </div>

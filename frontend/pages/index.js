@@ -68,9 +68,6 @@ export default function Home() {
           </div>
         </section>
         <section style={{display:'flex', flexWrap:'wrap', justifyContent:'center', gap:'32px', padding:'0 0 48px 0'}}>
-          <div style={{flex:'1 1 320px', maxWidth:400}}>
-            <HashTest />
-          </div>
           <div style={{background:'#fff', borderRadius:16, boxShadow:'0 2px 12px #e0e7ff', padding:'24px', maxWidth:320, flex:'1 1 320px'}}>
             <h3 style={{color:'#0070f3', fontWeight:'bold', fontSize:'1.2rem'}}>For Issuers</h3>
             <p style={{color:'#333'}}>Upload and issue credentials securely. Only cryptographic hashes are stored on-chain.</p>

@@ -21,20 +21,11 @@ export default function HashTest() {
 
   return (
     <div style={{padding:20, border:'1px solid #ccc', borderRadius:8, maxWidth:400}}>
-      <h3>File Hash Test (Phase 2)</h3>
+      <h3>File Hash Test</h3>
       <input type="file" onChange={handleFileChange} />
       {fileName && <div><b>File:</b> {fileName}</div>}
       {hash && <div><b>SHA-256 Hash:</b> <span style={{wordBreak:'break-all'}}>{hash}</span></div>}
       {error && <div style={{color:'red'}}>{error}</div>}
-      <ul style={{marginTop:10}}>
-        <li>Upload original file → hash A</li>
-        <li>Upload same file again → hash A (same)</li>
-        <li>Edit file slightly → hash B (different)</li>
-      </ul>
-      <div style={{marginTop:10, fontSize:12, color:'#555'}}>
-        <b>Requirement:</b> Same file always gives same hash. Any change gives a different hash. <br/>
-        <b>Phase 2 is complete when:</b> You see this behavior for any file.
-      </div>
     </div>
   );
 }

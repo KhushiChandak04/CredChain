@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import { uploadToIPFS } from '../utils/ipfs';
-import { hashFile } from '../utils/hash';
-import { issueCredential } from '../utils/contract';
+import React, { useState } from 'react';
+import { useRouter } from 'next/router';
 
 export default function IssueCredentialForm() {
   const [file, setFile] = useState(null);
   const [status, setStatus] = useState('');
+  const [issued, setIssued] = useState(false);
+  const router = useRouter();
 
   const handleFileChange = (e) => setFile(e.target.files[0]);
 
@@ -19,6 +19,10 @@ export default function IssueCredentialForm() {
     setStatus('Issuing credential...');
     await issueCredential(fileHash);
     setStatus('Credential issued! IPFS: ' + ipfsHash);
+    setIssued(true);
+    setTimeout(() => {
+      router.push('/verify');
+    }, 1200);
   };
 
   return (
@@ -53,10 +57,12 @@ export default function IssueCredentialForm() {
         onMouseOut={e => e.currentTarget.style.background = 'linear-gradient(90deg, #0070f3 0%, #00c6ff 100%)'}
         onMouseDown={e => e.currentTarget.style.transform = 'scale(0.97)'}
         onMouseUp={e => e.currentTarget.style.transform = 'scale(1)'}
+        disabled={issued}
       >
         Issue Credential
       </button>
       <div className="cred-status" style={{marginTop:12, color:'#0070f3', fontWeight:'bold', fontSize:'1.1rem'}}>{status}</div>
+      {/* Auto-redirect to /verify after issuing credential */}
     </form>
   );
 }
