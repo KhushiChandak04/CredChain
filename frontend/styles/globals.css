@@ -109,7 +109,6 @@ body {
 }
 
 .footer {
-.footer {
   text-align: center;
   padding: 2rem 0 1rem 0;
   color: #888;
@@ -140,7 +139,6 @@ body {
   color: #3b82f6;
   font-size: 2rem;
 }
-.dashboard-desc {
 .dashboard-desc {
   color: #555;
   margin-bottom: 2rem;
@@ -181,6 +179,4 @@ body {
   color: #3b82f6;
   font-size: 1rem;
   margin-top: 0.5rem;
-}
-}
 }

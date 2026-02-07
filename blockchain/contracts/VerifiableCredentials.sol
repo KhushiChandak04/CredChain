@@ -10,9 +10,31 @@ contract VerifiableCredentials {
 
     mapping(bytes32 => Credential) public credentials;
 
+    mapping(address => bool) public whitelistedIssuers;
+    address public owner;
+
     event CredentialIssued(address indexed issuer, bytes32 indexed hash, uint256 issuedAt);
 
-    function issueCredential(bytes32 hash) external {
+    modifier onlyIssuer() {
+        require(whitelistedIssuers[msg.sender], "Not whitelisted");
+        _;
+    }
+
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Not owner");
+        _;
+    }
+
+    constructor() {
+        owner = msg.sender;
+        whitelistedIssuers[msg.sender] = true;
+    }
+
+    function addIssuer(address _issuer) external onlyOwner {
+        whitelistedIssuers[_issuer] = true;
+    }
+
+    function issueCredential(bytes32 hash) external onlyIssuer {
         require(credentials[hash].issuedAt == 0, "Credential already issued");
         credentials[hash] = Credential(msg.sender, hash, block.timestamp);
         emit CredentialIssued(msg.sender, hash, block.timestamp);

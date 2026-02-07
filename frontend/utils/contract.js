@@ -1,6 +1,11 @@
-// Ensure MetaMask is on Sepolia before any transaction
+import { ethers } from 'ethers';
+import contractArtifact from '../../blockchain/artifacts/contracts/VerifiableCredentials.sol/VerifiableCredentials.json';
+
+const contractABI = contractArtifact.abi;
+const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
 const SEPOLIA_CHAIN_ID = "0xaa36a7"; // 11155111 in hex
 
+// Ensure MetaMask is on Sepolia before any transaction
 export async function ensureSepoliaNetwork() {
   if (!window.ethereum) {
     alert("MetaMask not found");
@@ -37,11 +42,6 @@ export async function ensureSepoliaNetwork() {
     }
   }
 }
-import { ethers } from 'ethers';
-import contractArtifact from '../../blockchain/artifacts/contracts/VerifiableCredentials.sol/VerifiableCredentials.json';
-const contractABI = contractArtifact.abi;
-
-const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
 
 function getProvider() {
   if (typeof window !== 'undefined' && window.ethereum) {

@@ -1,10 +1,41 @@
-import { useState } from 'react';
-
+import React, { useState, useEffect } from 'react';
 
 export default function WalletConnect() {
   const [address, setAddress] = useState('');
   const [network, setNetwork] = useState('');
   const [connecting, setConnecting] = useState(false);
+
+  // Helper to check connection status
+  const checkConnection = async () => {
+    if (window.ethereum) {
+      const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+      setAddress(accounts[0] || '');
+      const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+      if (chainId === '0xaa36a7') {
+        setNetwork('Sepolia');
+      } else if (chainId) {
+        setNetwork('Unknown');
+      } else {
+        setNetwork('');
+      }
+    } else {
+      setAddress('');
+      setNetwork('');
+    }
+  };
+
+  // Listen for account/network changes
+  useEffect(() => {
+    checkConnection();
+    if (window.ethereum) {
+      window.ethereum.on('accountsChanged', checkConnection);
+      window.ethereum.on('chainChanged', checkConnection);
+      return () => {
+        window.ethereum.removeListener('accountsChanged', checkConnection);
+        window.ethereum.removeListener('chainChanged', checkConnection);
+      };
+    }
+  }, []);
 
   const handleConnect = async () => {
     setConnecting(true);
@@ -30,7 +61,7 @@ export default function WalletConnect() {
     <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
       <button
         onClick={handleConnect}
-        disabled={!!address || connecting}
+        disabled={typeof window !== 'undefined' && window.ethereum && window.ethereum.selectedAddress && address && window.ethereum.selectedAddress.toLowerCase() === address.toLowerCase() && !connecting}
         style={{
           background: address ? 'linear-gradient(90deg, #00c6ff 0%, #0070f3 100%)' : 'linear-gradient(90deg, #0070f3 0%, #00c6ff 100%)',
           color: '#fff',
