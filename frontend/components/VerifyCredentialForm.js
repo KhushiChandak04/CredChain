@@ -53,7 +53,8 @@ export default function VerifyCredentialForm() {
         setBadge('invalid');
       }
     } catch (err) {
-      setResult('Error: ' + (err.message || 'Verification failed'));
+      console.error('Verification error:', err);
+      setResult('Verification failed. Please check your wallet connection and try again.');
       setBadge('error');
     }
     setVerifying(false);
@@ -164,8 +165,11 @@ export default function VerifyCredentialForm() {
           {fileHash && (
             <div style={{ fontSize: '0.9rem' }}>
               <b>#️⃣ File Hash:</b>{' '}
-              <span style={{ fontFamily: 'monospace', fontSize: '0.75rem', wordBreak: 'break-all', color: '#555' }}>
-                {fileHash}
+              <span
+                title={fileHash}
+                style={{ fontFamily: 'monospace', fontSize: '0.85rem', color: '#555', cursor: 'help' }}
+              >
+                {fileHash.slice(0, 10)}...{fileHash.slice(-8)}
               </span>
             </div>
           )}

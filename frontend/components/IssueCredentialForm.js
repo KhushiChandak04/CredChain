@@ -50,7 +50,18 @@ export default function IssueCredentialForm() {
       setTimeout(() => router.push('/verify'), 2000);
     } catch (err) {
       setStep('error');
-      setErrorMsg(err.message || 'Something went wrong');
+      console.error('Issue credential error:', err);
+      // Show user-friendly messages, don't expose internals
+      const msg = err.message || '';
+      if (msg.includes('Not whitelisted')) {
+        setErrorMsg('Your wallet is not whitelisted as an issuer.');
+      } else if (msg.includes('user rejected') || msg.includes('denied')) {
+        setErrorMsg('Transaction was rejected in MetaMask.');
+      } else if (msg.includes('IPFS') || msg.includes('upload')) {
+        setErrorMsg(msg);
+      } else {
+        setErrorMsg('Something went wrong. Please try again.');
+      }
       setStatusMsg('');
     }
   };

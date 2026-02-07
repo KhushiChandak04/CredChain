@@ -1,5 +1,5 @@
 import { ethers } from 'ethers';
-import contractArtifact from '../../blockchain/artifacts/contracts/VerifiableCredentials.sol/VerifiableCredentials.json';
+import contractArtifact from './contractABI.json';
 
 const contractABI = contractArtifact.abi;
 const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;

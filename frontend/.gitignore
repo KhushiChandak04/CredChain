@@ -22,6 +22,3 @@ yarn-error.log*
 .vscode/
 .idea/
 *.swp
-
-# Misc
-package-lock.json
