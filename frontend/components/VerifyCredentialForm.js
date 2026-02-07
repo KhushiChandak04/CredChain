@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { hashFile } from '../utils/hash';
 import { ensureSepoliaNetwork } from '../utils/contract';
 import { ethers } from 'ethers';
+import { SearchIcon, CheckCircleIcon, XCircleIcon, AlertTriangleIcon, LoaderIcon, ClipboardIcon, UserCheckIcon, ClockIcon, HashIcon, ExternalLinkIcon } from './Icons';
 
 export default function VerifyCredentialForm() {
   const [file, setFile] = useState(null);
@@ -44,7 +45,7 @@ export default function VerifyCredentialForm() {
       const cred = await contract.credentials(hash);
 
       if (cred.issuedAt && cred.issuedAt.toString() !== '0') {
-        setResult('Credential is valid and verified on-chain!');
+        setResult('Credential is valid and verified on-chain.');
         setBadge('valid');
         setIssuer(cred.issuer);
         setTimestamp(new Date(Number(cred.issuedAt) * 1000).toLocaleString());
@@ -62,70 +63,96 @@ export default function VerifyCredentialForm() {
 
   return (
     <form onSubmit={handleSubmit} style={{
-      padding: 24,
-      borderRadius: 16,
-      background: 'linear-gradient(120deg, #f8fafc 0%, #e0f7fa 100%)',
-      maxWidth: 440,
-      margin: '0 auto',
+      padding: 0,
       display: 'flex',
       flexDirection: 'column',
-      alignItems: 'center',
+      gap: 16,
     }}>
-      <label style={{ fontWeight: 'bold', marginBottom: 10, color: '#333' }}>Select credential file</label>
-      <input
-        type="file"
-        onChange={handleFileChange}
-        style={{ marginBottom: 20, padding: '10px', borderRadius: 8, border: '1px solid #b2ebf2', width: '100%' }}
-      />
+      {/* File Input */}
+      <div>
+        <label style={{
+          display: 'block',
+          fontWeight: 600,
+          fontSize: '0.85rem',
+          color: 'var(--color-text)',
+          marginBottom: 6,
+        }}>
+          Select credential file
+        </label>
+        <input
+          type="file"
+          onChange={handleFileChange}
+          style={{
+            width: '100%',
+            padding: '10px 12px',
+            borderRadius: 'var(--radius-md)',
+            border: '1px solid var(--color-border)',
+            background: 'var(--color-bg)',
+            fontSize: '0.88rem',
+            color: 'var(--color-text)',
+          }}
+        />
+      </div>
+
+      {/* Submit Button */}
       <button
         type="submit"
         disabled={!file || verifying}
         style={{
-          background: 'linear-gradient(90deg, #00c6ff 0%, #0070f3 100%)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 8,
+          background: 'var(--color-accent)',
           color: '#fff',
-          padding: '14px 32px',
-          borderRadius: '10px',
+          padding: '11px 24px',
+          borderRadius: 'var(--radius-md)',
           border: 'none',
-          fontWeight: 'bold',
-          fontSize: '1.1rem',
-          boxShadow: '0 2px 8px #eee',
+          fontWeight: 600,
+          fontSize: '0.9rem',
           cursor: (!file || verifying) ? 'default' : 'pointer',
-          opacity: (!file || verifying) ? 0.7 : 1,
-          transition: 'all 0.3s',
-          marginBottom: '1.2rem',
+          opacity: (!file || verifying) ? 0.6 : 1,
+          transition: 'all 0.2s',
+          width: '100%',
         }}
       >
-        {verifying ? '⏳ Verifying...' : '🔍 Verify Credential'}
+        {verifying
+          ? <><LoaderIcon size={16} /> Verifying…</>
+          : <><SearchIcon size={16} /> Verify Credential</>
+        }
       </button>
 
       {/* Status Badge */}
       {badge && (
-        <div style={{
-          marginBottom: 10,
-          padding: '10px 24px',
-          borderRadius: 16,
-          fontWeight: 'bold',
-          fontSize: '1.15rem',
+        <div className="fade-in" style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 8,
+          padding: '10px 20px',
+          borderRadius: 'var(--radius-md)',
+          fontWeight: 600,
+          fontSize: '0.9rem',
           color: '#fff',
-          background: badge === 'valid'
-            ? 'linear-gradient(90deg, #43e97b 0%, #38f9d7 100%)'
-            : badge === 'invalid'
-              ? 'linear-gradient(90deg, #ff512f 0%, #dd2476 100%)'
-              : '#ff9800',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+          background: badge === 'valid' ? 'var(--color-success)'
+            : badge === 'invalid' ? 'var(--color-error)'
+            : 'var(--color-warning)',
         }}>
-          {badge === 'valid' && '✅ VALID'}
-          {badge === 'invalid' && '❌ NOT FOUND'}
-          {badge === 'error' && '⚠️ ERROR'}
+          {badge === 'valid' && <><CheckCircleIcon size={18} /> VALID</>}
+          {badge === 'invalid' && <><XCircleIcon size={18} /> NOT FOUND</>}
+          {badge === 'error' && <><AlertTriangleIcon size={18} /> ERROR</>}
         </div>
       )}
 
+      {/* Result Text */}
       {result && (
         <div style={{
-          color: badge === 'valid' ? '#2e7d32' : badge === 'invalid' ? '#c62828' : '#e65100',
-          fontWeight: 'bold',
-          fontSize: '0.95rem',
-          marginBottom: 8,
+          color: badge === 'valid' ? 'var(--color-success)'
+            : badge === 'invalid' ? 'var(--color-error)'
+            : 'var(--color-warning)',
+          fontWeight: 500,
+          fontSize: '0.88rem',
+          textAlign: 'center',
         }}>
           {result}
         </div>
@@ -133,41 +160,83 @@ export default function VerifyCredentialForm() {
 
       {/* Credential Details */}
       {badge === 'valid' && (
-        <div style={{
-          background: '#e8f5e9',
-          borderRadius: 12,
-          padding: '16px 20px',
-          width: '100%',
-          marginTop: 4,
+        <div className="fade-in" style={{
+          background: 'var(--color-success-bg)',
+          borderRadius: 'var(--radius-md)',
+          padding: '16px',
         }}>
-          <div style={{ fontSize: '0.85rem', fontWeight: 'bold', color: '#2e7d32', marginBottom: 8 }}>
-            📋 Credential Details
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 6,
+            fontSize: '0.78rem',
+            fontWeight: 600,
+            color: 'var(--color-text-muted)',
+            textTransform: 'uppercase',
+            letterSpacing: '0.3px',
+            marginBottom: 12,
+          }}>
+            <ClipboardIcon size={14} /> Credential Details
           </div>
+
           {issuer && (
-            <div style={{ marginBottom: 6, fontSize: '0.9rem' }}>
-              <b>🦊 Issuer:</b>{' '}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 8,
+              marginBottom: 10,
+              fontSize: '0.88rem',
+            }}>
+              <UserCheckIcon size={15} color="var(--color-success)" />
+              <span style={{ fontWeight: 600, color: 'var(--color-text-secondary)' }}>Issuer</span>
               <a
                 href={`https://sepolia.etherscan.io/address/${issuer}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{ color: '#0070f3', textDecoration: 'underline', fontFamily: 'monospace', fontSize: '0.85rem' }}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  color: 'var(--color-accent)',
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '0.82rem',
+                  fontWeight: 500,
+                }}
               >
                 {issuer.slice(0, 6)}...{issuer.slice(-4)}
+                <ExternalLinkIcon size={12} />
               </a>
             </div>
           )}
           {timestamp && (
-            <div style={{ marginBottom: 6, fontSize: '0.9rem' }}>
-              <b>🕐 Issued At:</b>{' '}
-              <span style={{ color: '#009688', fontWeight: 'bold' }}>{timestamp}</span>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 8,
+              marginBottom: 10,
+              fontSize: '0.88rem',
+            }}>
+              <ClockIcon size={15} color="var(--color-success)" />
+              <span style={{ fontWeight: 600, color: 'var(--color-text-secondary)' }}>Issued</span>
+              <span style={{ color: 'var(--color-text)', fontWeight: 500 }}>{timestamp}</span>
             </div>
           )}
           {fileHash && (
-            <div style={{ fontSize: '0.9rem' }}>
-              <b>#️⃣ File Hash:</b>{' '}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 8,
+              fontSize: '0.88rem',
+            }}>
+              <HashIcon size={15} color="var(--color-success)" />
+              <span style={{ fontWeight: 600, color: 'var(--color-text-secondary)' }}>Hash</span>
               <span
                 title={fileHash}
-                style={{ fontFamily: 'monospace', fontSize: '0.85rem', color: '#555', cursor: 'help' }}
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '0.82rem',
+                  color: 'var(--color-text-muted)',
+                  cursor: 'help',
+                }}
               >
                 {fileHash.slice(0, 10)}...{fileHash.slice(-8)}
               </span>

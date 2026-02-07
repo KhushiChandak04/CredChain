@@ -1,5 +1,6 @@
 import VerifyCredentialForm from '../components/VerifyCredentialForm';
 import { useWallet } from './_app';
+import { WalletIcon } from '../components/Icons';
 
 export default function Verify() {
   const { address } = useWallet();
@@ -7,36 +8,51 @@ export default function Verify() {
   return (
     <div style={{
       display: 'flex',
-      alignItems: 'center',
       justifyContent: 'center',
-      padding: '40px 16px',
+      padding: '48px 0',
     }}>
       <div style={{
-        background: '#fff',
-        borderRadius: 20,
-        boxShadow: '0 6px 32px #e0e7ff',
-        padding: '40px 32px',
-        maxWidth: 520,
+        background: 'var(--color-surface)',
+        borderRadius: 'var(--radius-xl)',
+        border: '1px solid var(--color-border)',
+        boxShadow: 'var(--shadow-md)',
+        padding: '36px 32px',
+        maxWidth: 500,
         width: '100%',
-        textAlign: 'center',
       }}>
-        <h2 style={{ color: '#00c6ff', fontWeight: 'bold', fontSize: '2rem', marginBottom: 8 }}>
-          ✅ Verifier Interface
+        <h2 style={{
+          color: 'var(--color-text)',
+          fontWeight: 700,
+          fontSize: '1.5rem',
+          marginBottom: 6,
+          letterSpacing: '-0.3px',
+        }}>
+          Verify Credential
         </h2>
-        <p style={{ color: '#333', marginBottom: 16, fontSize: '1.1rem' }}>
+        <p style={{
+          color: 'var(--color-text-secondary)',
+          marginBottom: 20,
+          fontSize: '0.9rem',
+          lineHeight: 1.6,
+        }}>
           Upload a credential file to verify its authenticity against the blockchain record.
         </p>
 
         {!address && (
           <div style={{
-            background: '#fff3e0',
-            borderRadius: 10,
-            padding: '12px 20px',
+            background: 'var(--color-warning-bg)',
+            borderRadius: 'var(--radius-md)',
+            padding: '12px 16px',
             marginBottom: 20,
-            color: '#e65100',
-            fontWeight: 'bold',
+            color: 'var(--color-warning)',
+            fontWeight: 600,
+            fontSize: '0.88rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
           }}>
-            🦊 Connect your wallet to verify credentials on Sepolia
+            <WalletIcon size={16} />
+            Connect your wallet to verify credentials on Sepolia
           </div>
         )}
 

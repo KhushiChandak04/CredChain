@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { uploadToIPFS } from '../utils/ipfs';
 import { hashFile } from '../utils/hash';
 import { issueCredential } from '../utils/contract';
+import { UploadIcon, HashIcon, BoxIcon, CheckCircleIcon, XCircleIcon, LoaderIcon, FileTextIcon, ExternalLinkIcon, PinIcon } from './Icons';
 
 export default function IssueCredentialForm() {
   const [file, setFile] = useState(null);
@@ -30,28 +31,27 @@ export default function IssueCredentialForm() {
     try {
       // Step 1: Upload to IPFS
       setStep('uploading');
-      setStatusMsg('Uploading to IPFS via Pinata...');
+      setStatusMsg('Uploading to IPFS via Pinata…');
       const cid = await uploadToIPFS(file);
       setIpfsCid(cid);
 
       // Step 2: Hash the file
       setStep('hashing');
-      setStatusMsg('Hashing file (SHA-256)...');
+      setStatusMsg('Hashing file (SHA-256)…');
       const fileHash = await hashFile(file);
 
       // Step 3: Issue on-chain
       setStep('issuing');
-      setStatusMsg('Issuing credential on Sepolia... (confirm in MetaMask)');
+      setStatusMsg('Issuing credential on Sepolia… (confirm in MetaMask)');
       await issueCredential(fileHash);
 
       // Done
       setStep('done');
-      setStatusMsg('Credential issued successfully! 🎉');
+      setStatusMsg('Credential issued successfully!');
       setTimeout(() => router.push('/verify'), 2000);
     } catch (err) {
       setStep('error');
       console.error('Issue credential error:', err);
-      // Show user-friendly messages, don't expose internals
       const msg = err.message || '';
       if (msg.includes('Not whitelisted')) {
         setErrorMsg('Your wallet is not whitelisted as an issuer.');
@@ -67,81 +67,115 @@ export default function IssueCredentialForm() {
   };
 
   const steps = [
-    { key: 'uploading', label: '📤 Upload to IPFS' },
-    { key: 'hashing', label: '#️⃣ Hash File' },
-    { key: 'issuing', label: '⛓️ Issue On-Chain' },
-    { key: 'done', label: '✅ Complete' },
+    { key: 'uploading', label: 'Upload', icon: <UploadIcon size={13} /> },
+    { key: 'hashing', label: 'Hash', icon: <HashIcon size={13} /> },
+    { key: 'issuing', label: 'On-Chain', icon: <BoxIcon size={13} /> },
+    { key: 'done', label: 'Complete', icon: <CheckCircleIcon size={13} /> },
   ];
 
   const stepOrder = ['uploading', 'hashing', 'issuing', 'done'];
 
   return (
     <form onSubmit={handleSubmit} style={{
-      padding: 24,
-      borderRadius: 16,
-      background: 'linear-gradient(120deg, #f8fafc 0%, #e0f7fa 100%)',
-      maxWidth: 420,
-      margin: '0 auto',
+      padding: 0,
       display: 'flex',
       flexDirection: 'column',
-      alignItems: 'center',
+      gap: 16,
     }}>
-      <label style={{ fontWeight: 'bold', marginBottom: 8, color: '#333' }}>Select credential file</label>
-      <input
-        type="file"
-        onChange={handleFileChange}
-        style={{ marginBottom: 18, padding: '8px', borderRadius: 6, border: '1px solid #b2ebf2', width: '100%' }}
-      />
+      {/* File Input */}
+      <div>
+        <label style={{
+          display: 'block',
+          fontWeight: 600,
+          fontSize: '0.85rem',
+          color: 'var(--color-text)',
+          marginBottom: 6,
+        }}>
+          Select credential file
+        </label>
+        <input
+          type="file"
+          onChange={handleFileChange}
+          style={{
+            width: '100%',
+            padding: '10px 12px',
+            borderRadius: 'var(--radius-md)',
+            border: '1px solid var(--color-border)',
+            background: 'var(--color-bg)',
+            fontSize: '0.88rem',
+            color: 'var(--color-text)',
+          }}
+        />
+      </div>
 
+      {/* Submit Button */}
       <button
         type="submit"
         disabled={!file || step === 'uploading' || step === 'hashing' || step === 'issuing' || step === 'done'}
         style={{
-          background: step === 'done'
-            ? 'linear-gradient(90deg, #43e97b 0%, #38f9d7 100%)'
-            : 'linear-gradient(90deg, #0070f3 0%, #00c6ff 100%)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 8,
+          background: step === 'done' ? 'var(--color-success)' : 'var(--color-accent)',
           color: '#fff',
-          padding: '12px 28px',
-          borderRadius: '8px',
+          padding: '11px 24px',
+          borderRadius: 'var(--radius-md)',
           border: 'none',
-          fontWeight: 'bold',
-          fontSize: '1rem',
-          boxShadow: '0 2px 8px #eee',
+          fontWeight: 600,
+          fontSize: '0.9rem',
           cursor: step !== 'idle' ? 'default' : 'pointer',
-          opacity: (!file || step !== 'idle') ? 0.7 : 1,
-          transition: 'all 0.3s',
-          marginBottom: '1rem',
+          opacity: (!file || step !== 'idle') ? 0.6 : 1,
+          transition: 'all 0.2s',
+          width: '100%',
         }}
       >
-        {step === 'done' ? '✅ Issued!' : step === 'idle' ? '📝 Issue Credential' : '⏳ Processing...'}
+        {step === 'done'
+          ? <><CheckCircleIcon size={16} /> Issued</>
+          : step === 'idle'
+            ? <><FileTextIcon size={16} /> Issue Credential</>
+            : <><LoaderIcon size={16} /> Processing…</>
+        }
       </button>
 
-      {/* Step Progress Badges */}
+      {/* Step Progress */}
       {step !== 'idle' && (
-        <div style={{ display: 'flex', gap: 8, marginBottom: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
+        <div style={{
+          display: 'flex',
+          gap: 6,
+          flexWrap: 'wrap',
+          justifyContent: 'center',
+        }}>
           {steps.map((s) => {
             const currentIdx = stepOrder.indexOf(step);
             const thisIdx = stepOrder.indexOf(s.key);
-            let bg = '#e0e0e0';
-            let color = '#888';
-            if (step === 'error' && thisIdx <= stepOrder.indexOf('uploading')) {
-              bg = '#fce4ec'; color = '#c62828';
+            let bg, color;
+            if (step === 'error' && thisIdx <= 0) {
+              bg = 'var(--color-error-bg)';
+              color = 'var(--color-error)';
             } else if (thisIdx < currentIdx) {
-              bg = '#e8f5e9'; color = '#2e7d32';
+              bg = 'var(--color-success-bg)';
+              color = 'var(--color-success)';
             } else if (thisIdx === currentIdx) {
-              bg = step === 'done' ? '#e8f5e9' : '#e3f2fd';
-              color = step === 'done' ? '#2e7d32' : '#0070f3';
+              bg = step === 'done' ? 'var(--color-success-bg)' : 'var(--color-accent-light)';
+              color = step === 'done' ? 'var(--color-success)' : 'var(--color-accent)';
+            } else {
+              bg = 'var(--color-bg)';
+              color = 'var(--color-text-muted)';
             }
             return (
               <span key={s.key} style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 4,
                 background: bg,
                 color,
-                borderRadius: 12,
+                borderRadius: 20,
                 padding: '4px 10px',
-                fontSize: '0.78rem',
-                fontWeight: 'bold',
+                fontSize: '0.75rem',
+                fontWeight: 600,
               }}>
-                {s.label}
+                {s.icon} {s.label}
               </span>
             );
           })}
@@ -150,7 +184,12 @@ export default function IssueCredentialForm() {
 
       {/* Status message */}
       {statusMsg && (
-        <div style={{ color: step === 'done' ? '#2e7d32' : '#0070f3', fontWeight: 'bold', fontSize: '1rem', marginBottom: 8 }}>
+        <div className={step !== 'done' ? 'pulse' : ''} style={{
+          color: step === 'done' ? 'var(--color-success)' : 'var(--color-accent)',
+          fontWeight: 600,
+          fontSize: '0.88rem',
+          textAlign: 'center',
+        }}>
           {statusMsg}
         </div>
       )}
@@ -158,39 +197,63 @@ export default function IssueCredentialForm() {
       {/* Error */}
       {errorMsg && (
         <div style={{
-          background: '#fce4ec',
-          borderRadius: 10,
-          padding: '10px 16px',
-          color: '#c62828',
-          fontWeight: 'bold',
-          fontSize: '0.9rem',
-          marginBottom: 8,
-          width: '100%',
-          textAlign: 'center',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 8,
+          background: 'var(--color-error-bg)',
+          borderRadius: 'var(--radius-md)',
+          padding: '10px 14px',
+          color: 'var(--color-error)',
+          fontWeight: 500,
+          fontSize: '0.85rem',
         }}>
-          ❌ {errorMsg}
+          <XCircleIcon size={16} />
+          {errorMsg}
         </div>
       )}
 
       {/* IPFS CID */}
       {ipfsCid && (
         <div style={{
-          background: '#e8f5e9',
-          borderRadius: 10,
-          padding: '10px 16px',
-          marginBottom: 8,
-          width: '100%',
-          textAlign: 'center',
+          background: 'var(--color-success-bg)',
+          borderRadius: 'var(--radius-md)',
+          padding: '12px 14px',
         }}>
-          <div style={{ fontSize: '0.85rem', color: '#555', marginBottom: 4 }}>📌 IPFS CID</div>
-          <div style={{ fontSize: '0.8rem', color: '#333', wordBreak: 'break-all', fontFamily: 'monospace' }}>{ipfsCid}</div>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 6,
+            fontSize: '0.78rem',
+            color: 'var(--color-text-muted)',
+            fontWeight: 600,
+            textTransform: 'uppercase',
+            letterSpacing: '0.3px',
+            marginBottom: 6,
+          }}>
+            <PinIcon size={13} /> IPFS CID
+          </div>
+          <div style={{
+            fontSize: '0.8rem',
+            color: 'var(--color-text)',
+            wordBreak: 'break-all',
+            fontFamily: 'var(--font-mono)',
+            marginBottom: 6,
+          }}>
+            {ipfsCid}
+          </div>
           <a
             href={`https://gateway.pinata.cloud/ipfs/${ipfsCid}`}
             target="_blank"
             rel="noopener noreferrer"
-            style={{ color: '#009688', fontWeight: 'bold', fontSize: '0.85rem', textDecoration: 'underline' }}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              color: 'var(--color-accent)',
+              fontWeight: 600,
+              fontSize: '0.82rem',
+            }}
           >
-            View on IPFS ↗
+            View on IPFS <ExternalLinkIcon size={13} />
           </a>
         </div>
       )}
