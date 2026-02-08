@@ -4,20 +4,21 @@ import { useWallet } from './_app';
 import { FileTextIcon, ShieldCheckIcon, LockIcon, WalletIcon, CheckCircleIcon, AlertTriangleIcon } from '../components/Icons';
 
 export default function Home() {
-  const { address, network, isWhitelisted } = useWallet();
+  const { address, network, isWhitelisted, disconnectWallet } = useWallet();
 
   return (
     <>
       <Head>
         <title>CredChain — Decentralized Credential Verification</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
       {/* Hero */}
-      <section style={{ padding: '72px 0 40px', textAlign: 'center', maxWidth: 680, margin: '0 auto' }}>
+      <section style={{ padding: '48px 0 32px', textAlign: 'center', maxWidth: 680, margin: '0 auto' }}>
         <h1 style={{
           color: 'var(--color-text)',
           fontWeight: 700,
-          fontSize: '2.6rem',
+          fontSize: 'clamp(1.6rem, 5vw, 2.6rem)',
           lineHeight: 1.2,
           marginBottom: 16,
           letterSpacing: '-0.5px',
@@ -26,16 +27,18 @@ export default function Home() {
         </h1>
         <p style={{
           color: 'var(--color-text-secondary)',
-          fontSize: '1.1rem',
+          fontSize: 'clamp(0.9rem, 2.5vw, 1.1rem)',
           lineHeight: 1.7,
           marginBottom: 32,
           maxWidth: 520,
           margin: '0 auto 32px',
+          padding: '0 8px',
         }}>
           Issue, store, and verify tamper-proof credentials on Ethereum.
           Privacy-first. No central authority. Powered by blockchain and IPFS.
         </p>
-        <div style={{ display: 'flex', justifyContent: 'center', gap: 12, flexWrap: 'wrap' }}>
+
+        <div style={{ display: 'flex', justifyContent: 'center', gap: 12, flexWrap: 'wrap', padding: '0 8px' }}>
           <Link href="/issue" style={{
             display: 'inline-flex',
             alignItems: 'center',
@@ -48,6 +51,8 @@ export default function Home() {
             fontSize: '0.95rem',
             transition: 'background 0.2s',
             boxShadow: 'var(--shadow-sm)',
+            flex: '0 1 auto',
+            minWidth: 0,
           }}>
             <FileTextIcon size={18} />
             Issue Credential
@@ -65,6 +70,8 @@ export default function Home() {
             border: '1px solid var(--color-border)',
             transition: 'border-color 0.2s',
             boxShadow: 'var(--shadow-sm)',
+            flex: '0 1 auto',
+            minWidth: 0,
           }}>
             <ShieldCheckIcon size={18} />
             Verify Credential
@@ -80,19 +87,40 @@ export default function Home() {
           background: 'var(--color-surface)',
           borderRadius: 'var(--radius-lg)',
           border: '1px solid var(--color-border)',
-          padding: '20px 24px',
+          padding: '20px 20px',
         }}>
-          <h3 style={{
-            color: 'var(--color-text)',
-            fontWeight: 600,
-            fontSize: '0.9rem',
-            marginBottom: 14,
-            textTransform: 'uppercase',
-            letterSpacing: '0.5px',
-          }}>
-            Connection Status
-          </h3>
-          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
+            <h3 style={{
+              color: 'var(--color-text)',
+              fontWeight: 600,
+              fontSize: '0.9rem',
+              textTransform: 'uppercase',
+              letterSpacing: '0.5px',
+              margin: 0,
+            }}>
+              Connection Status
+            </h3>
+            <button
+              onClick={disconnectWallet}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 5,
+                background: 'var(--color-error-bg)',
+                color: 'var(--color-error)',
+                padding: '5px 12px',
+                borderRadius: 'var(--radius-sm)',
+                border: '1px solid rgba(220,38,38,0.2)',
+                fontWeight: 600,
+                fontSize: '0.75rem',
+                cursor: 'pointer',
+                transition: 'all 0.2s',
+              }}
+            >
+              Disconnect
+            </button>
+          </div>
+          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
             <StatusBadge
               icon={<WalletIcon size={14} />}
               label="Wallet"
@@ -117,8 +145,8 @@ export default function Home() {
       {/* Feature Cards */}
       <section style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-        gap: 20,
+        gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+        gap: 16,
         padding: '0 0 64px',
         maxWidth: 860,
         margin: '0 auto',

@@ -81,48 +81,6 @@ CredChain enables organisations to **issue tamper-proof digital credentials** (c
 
 ---
 
-## Project Structure
-
-```
-CredChain/
-├── blockchain/                 # Smart contract workspace
-│   ├── contracts/
-│   │   └── VerifiableCredentials.sol
-│   ├── scripts/
-│   │   ├── deploy.js
-│   │   └── addIssuer.js
-│   ├── test/
-│   │   └── credentials.test.js
-│   ├── ignition/               # Hardhat Ignition deployments
-│   ├── hardhat.config.js
-│   └── package.json
-│
-├── frontend/                   # Next.js application
-│   ├── pages/
-│   │   ├── _app.js             # Layout + WalletContext
-│   │   ├── index.js            # Landing page
-│   │   ├── issue.js            # Issuer dashboard
-│   │   ├── verify.js           # Verifier interface
-│   │   └── api/
-│   │       └── upload.js       # Server-side Pinata upload
-│   ├── components/
-│   │   ├── Icons.js            # SVG icon components
-│   │   ├── IssueCredentialForm.js
-│   │   └── VerifyCredentialForm.js
-│   ├── utils/
-│   │   ├── contract.js         # ethers.js helpers
-│   │   ├── contractABI.json    # Contract ABI
-│   │   ├── hash.js             # SHA-256 hashing
-│   │   └── ipfs.js             # IPFS upload helper
-│   ├── styles/
-│   │   └── globals.css         # Design system
-│   └── package.json
-│
-└── README.md
-```
-
----
-
 ## Getting Started
 
 ### Prerequisites

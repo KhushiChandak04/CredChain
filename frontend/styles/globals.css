@@ -100,3 +100,131 @@ button {
 .pulse {
   animation: pulse 1.8s ease-in-out infinite;
 }
+
+/* --- Layout Classes --- */
+.header-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.desktop-nav {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.desktop-wallet {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.main-content {
+  flex: 1;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.mobile-menu-btn {
+  display: none !important;
+}
+
+.mobile-menu {
+  display: none;
+}
+
+.mobile-overlay {
+  display: none;
+}
+
+.mobile-wallet-banner {
+  display: none;
+}
+
+/* Mobile nav link styling */
+.mobile-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: rgba(255,255,255,0.85);
+  font-weight: 500;
+  font-size: 0.95rem;
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  transition: background 0.2s;
+}
+
+.mobile-nav-link:hover {
+  background: rgba(255,255,255,0.06);
+}
+
+/* ==============================
+   RESPONSIVE STYLES
+   ============================== */
+
+/* Tablet: <= 768px */
+@media (max-width: 768px) {
+  .desktop-nav {
+    display: none !important;
+  }
+
+  .desktop-wallet {
+    display: none !important;
+  }
+
+  .mobile-menu-btn {
+    display: flex !important;
+  }
+
+  .mobile-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px 16px 16px;
+    background: var(--color-primary-light);
+    border-top: 1px solid rgba(255,255,255,0.08);
+    animation: fadeInUp 0.2s ease-out both;
+  }
+
+  .mobile-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 50;
+  }
+
+  .header-inner {
+    padding: 0 16px;
+  }
+
+  .main-content {
+    padding: 0 16px;
+  }
+}
+
+/* Show mobile wallet banner on mobile when no provider */
+@media (max-width: 768px) {
+  .mobile-wallet-banner {
+    display: block;
+  }
+}
+
+/* Small mobile: <= 480px */
+@media (max-width: 480px) {
+  .header-inner {
+    padding: 0 12px;
+    height: 56px;
+  }
+
+  .main-content {
+    padding: 0 12px;
+  }
+}
