@@ -36,24 +36,24 @@ CredChain enables organisations to **issue tamper-proof digital credentials** (c
 │                        Frontend (Next.js)                    │
 │                                                              │
 │  index.js ── issue.js ── verify.js                           │
-│       │          │            │                               │
+│       │          │            │                              │
 │       │    IssueCredForm  VerifyCredForm                     │
-│       │          │            │                               │
-│       ▼          ▼            ▼                               │
+│       │          │            │                              │
+│       ▼          ▼            ▼                              │
 │  ┌──────────────────────────────────┐                        │
 │  │  utils/                          │                        │
 │  │  ├─ contract.js  (ethers.js v5)  │                        │
 │  │  ├─ hash.js      (Web Crypto)    │                        │
 │  │  └─ ipfs.js      (→ /api/upload) │                        │
 │  └──────────────────────────────────┘                        │
-│               │                    │                          │
-│               ▼                    ▼                          │
-│     /api/upload (Pinata)    MetaMask (Sepolia)                │
+│               │                    │                         │
+│               ▼                    ▼                         │
+│     /api/upload (Pinata)    MetaMask (Sepolia)               │
 └──────────────────────────────────────────────────────────────┘
                                  │
                                  ▼
               ┌──────────────────────────────┐
-              │  VerifiableCredentials.sol    │
+              │  VerifiableCredentials.sol   │
               │  (Sepolia Testnet)           │
               │                              │
               │  • whitelistedIssuers map    │
@@ -195,19 +195,6 @@ struct Credential {
 }
 ```
 
----
-
-## Deployment
-
-The frontend is deployed on **Vercel** with zero configuration:
-
-1. Push to GitHub
-2. Import the repo on [vercel.com](https://vercel.com)
-3. Set **Root Directory** to `frontend`
-4. Add environment variables in Vercel dashboard
-5. Deploy — Vercel auto-detects Next.js
-
----
 
 ## Security Notes
 
@@ -216,10 +203,5 @@ The frontend is deployed on **Vercel** with zero configuration:
 - **File uploads are validated** — 10 MB limit, file type whitelist, temp file cleanup
 - **Error messages are sanitised** — no internal details leak to users
 - **Access control** — only whitelisted addresses can issue credentials
-- **Environment variables** — all secrets are in `.env` / `.env.local` (gitignored)
 
 ---
-
-## License
-
-MIT
